@@ -1,0 +1,23 @@
+.mapboxgl-canvas {
+  position: absolute;
+  display: block;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
+  top: 0px;
+}
+
+.map {
+  display: block;
+  position: relative;
+  margin: 0px auto;
+  width: 50%;
+  height: 500px;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  font-size: 12px;
+  text-align: center;
+  color: #fff;
+  background: #ee8a65;
+}
