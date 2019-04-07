@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+.env
 
 # testing
 /coverage
@@ -17,6 +18,9 @@
 .env.development.local
 .env.test.local
 .env.production.local
+players.js
+players.spec.js
+App.test.js
 
 npm-debug.log*
 yarn-debug.log*
