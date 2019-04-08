@@ -3,6 +3,7 @@ import mapboxgl from "mapbox-gl";
 import "./styles/map.css";
 import WeatherContainer from "./weatherContainer";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
+import Navbar from "./navBar";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAP_API;
 const weatherKey = process.env.REACT_APP_WEATHER_API;
@@ -101,6 +102,7 @@ class MapContainer extends Component {
 
     return (
       <div>
+        <Navbar />
         <div>
           <div ref={el => (this.mapContainer = el)} className="map" />
         </div>
