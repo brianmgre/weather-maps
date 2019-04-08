@@ -2,10 +2,14 @@ import React, { Component } from "react";
 import mapboxgl from "mapbox-gl";
 import "./styles/map.css";
 import WeatherContainer from "./weatherContainer";
+import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAP_API;
 const weatherKey = process.env.REACT_APP_WEATHER_API;
-const map = null;
+
+const geocoder = new MapboxGeocoder({
+  accessToken: mapboxgl.accessToken
+});
 
 class MapContainer extends Component {
   constructor(props) {
@@ -13,9 +17,7 @@ class MapContainer extends Component {
     this.state = {
       lng: -51,
       lat: 34,
-      zoom: 1.5,
-      vis: "visible",
-      clouds: true
+      zoom: 1.5
     };
   }
 
@@ -24,53 +26,66 @@ class MapContainer extends Component {
 
     this.map = new mapboxgl.Map({
       container: this.mapContainer,
-      style: "mapbox://styles/mapbox/streets-v9",
+      style: "mapbox://styles/mapbox/streets-v11",
       center: [lng, lat],
-      zoom
+      zoom,
+      results: [],
+      focus: null,
+      loading: false
     });
 
     this.map.addControl(
       new mapboxgl.GeolocateControl({
         positionOptions: {
-          enableHighAccuracy: true
+          enableHighAccuracy: true,
+          trigger: true
         },
         trackUserLocation: true
       })
     );
 
     this.map.on("click", e => {
-      this.map.flyTo({ center: e.lngLat, zoom: 8 });
+      this.map.flyTo({ center: e.lngLat, zoom: 13 });
 
       this.setState({
         lng: e.lngLat.lng.toFixed(2),
         lat: e.lngLat.lat.toFixed(2)
       });
     });
+
+    // setTimeout(() => {
+    //   this.hi();
+    // }, 3000);
+    this.map.addControl(geocoder);
+    geocoder.on("result", e => {
+      console.log(e.result);
+      this.setState({ lng: e.result.center[0], lat: e.result.center[1] });
+    });
   }
 
-  hi = (x, y) => event => {
+  setLayer = (element, mapType) => event => {
     if (
-      this.map.getSource(x) &&
-      this.map.getLayoutProperty(x, "visibility") === "none"
+      this.map.getSource(element) &&
+      this.map.getLayoutProperty(element, "visibility") === "none"
     ) {
-      this.map.setLayoutProperty(x, "visibility", "visible");
+      this.map.setLayoutProperty(element, "visibility", "visible");
     } else if (
-      this.map.getSource(x) &&
-      this.map.getLayoutProperty(x, "visibility") === "visible"
+      this.map.getSource(element) &&
+      this.map.getLayoutProperty(element, "visibility") === "visible"
     ) {
-      this.map.setLayoutProperty(x, "visibility", "none");
-    } else if (!this.map.getSource(x)) {
-      this.map.addSource(x, {
+      this.map.setLayoutProperty(element, "visibility", "none");
+    } else if (!this.map.getSource(element)) {
+      this.map.addSource(element, {
         type: "raster",
         tiles: [
-          `https://tile.openweathermap.org/map/${y}/{z}/{x}/{y}.png?appid=${weatherKey}`
+          `https://tile.openweathermap.org/map/${mapType}/{z}/{x}/{y}.png?appid=${weatherKey}`
         ],
         tileSize: 256
       });
       this.map.addLayer({
-        id: x,
+        id: element,
         type: "raster",
-        source: x,
+        source: element,
         minzoom: 0,
         maxzoom: 22,
         layout: {
@@ -80,26 +95,22 @@ class MapContainer extends Component {
     }
   };
 
-  remove = () => {
-    this.map.setLayoutProperty("temp", "visibility", "none");
-    console.log(this.map.getSource("temp"));
-  };
-
   render() {
-    console.log(this.state);
-    const { lng, lat, zoom } = this.state;
+    console.log("state", this.state);
+    // const { lng, lat, zoom } = this.state;
 
     return (
       <div>
         <div>
-          <div>{`Longitude: ${lng} Latitude: ${lat} Zoom: ${zoom}`}</div>
           <div ref={el => (this.mapContainer = el)} className="map" />
         </div>
+        <button onClick={this.setLayer("temp", "temp_new")}>Temp</button>
+        <button onClick={this.setLayer("clouds", "clouds_new")}>Clouds</button>
+        <button onClick={this.setLayer("rain", "precipitation_new")}>
+          Rain
+        </button>
+        <button onClick={this.setLayer("wind", "wind_new")}>wind</button>
         <WeatherContainer mapCord={this.state} />
-        <button onClick={this.hi("temp", "temp_new")}>Temp</button>
-        <button onClick={this.hi("clouds", "clouds_new")}>Clouds</button>
-        <button onClick={this.hi("rain", "precipitation_new")}>Rain</button>
-        <button onClick={this.hi("wind", "wind_new")}>wind</button>
       </div>
     );
   }
