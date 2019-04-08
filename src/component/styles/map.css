@@ -5,13 +5,14 @@
   left: 0px;
   bottom: 0px;
   top: 0px;
+  width: -webkit-fill-available;
 }
 
 .map {
   display: block;
   position: relative;
   margin: 0px auto;
-  width: 50%;
+  width: 80%;
   height: 500px;
   padding: 10px;
   border: none;
@@ -19,5 +20,5 @@
   font-size: 12px;
   text-align: center;
   color: #fff;
-  background: #ee8a65;
+  background: #11591c;
 }
