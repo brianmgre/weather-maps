@@ -19,23 +19,20 @@ class WeatherContainer extends Component {
     this.state = {
       weather: [],
       fiveDay: null,
-      checkA: false,
-      checkB: false,
-      checkC: false,
       apiFail: false
     };
   }
 
   componentDidMount() {
     if (this.props) {
-      const lat = this.props.mapCord.lat;
-      const lng = this.props.mapCord.lng;
+      const lat = this.props.mapCordLat;
+      const lng = this.props.mapCordLng;
       this.getWeather(lat, lng);
     }
   }
 
   getWeather = (lat, lng) => {
-    if (lat) {
+    if (lng) {
       axios
         .get(`${url}weather?lat=${lat}&lon=${lng}&${units}&APPID=${weatherKey}`)
         .then(res => {
@@ -47,10 +44,11 @@ class WeatherContainer extends Component {
           this.setState({ apiFail: true });
         });
     }
+    this.getFiveDayForecast(lat, lng);
   };
 
   getFiveDayForecast = (lat, lng) => {
-    if (this.props.mapCord.lat && this.props.mapCord.lat) {
+    if (this.state.weather) {
       axios
         .get(`${url}forecast?lat=${lat}&lon=${lng}&${units}&APPID=${hourlyKey}`)
         .then(res => {
@@ -67,9 +65,7 @@ class WeatherContainer extends Component {
   //watches for when lat and lng are updated
   componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
-      this.getWeather(this.props.mapCord.lat, this.props.mapCord.lng);
-    } else if (prevProps !== this.props.allState.showHourly) {
-      this.getFiveDayForecast(this.props.allState.lat, this.props.allState.lng);
+      this.getWeather(this.props.mapCordLat, this.props.mapCordLng);
     }
   }
 
@@ -82,20 +78,22 @@ class WeatherContainer extends Component {
           Weather is currently not available
         </Typography>
       );
-    } else if (this.props.allState.showFiveDay) {
+    } else if (this.props.showFiveDay) {
       return (
         <div className={classes.root}>
           <div className={classes.switches}>
             <SingleFiveHourly
-              allState={this.props.allState}
+              checkF={this.state.checkF}
+              checkE={this.state.checkE}
               changeHandler={this.props.changeHandler}
               toggleHourly={this.props.toggleHourly}
               toggleCurrentWeather={this.props.toggleCurrentWeather}
+              showFiveDay={this.props.showFiveDay}
             />
           </div>
           <FiveDayForecast
             fiveDay={this.state.fiveDay}
-            showHourly={this.props.allState.showHourly}
+            showHourly={this.props.showHourly}
           />
         </div>
       );
@@ -105,8 +103,9 @@ class WeatherContainer extends Component {
       <div className={classes.root}>
         <div className={classes.switches}>
           <SingleFiveHourly
-            allState={this.props.allState}
             changeHandler={this.props.changeHandler}
+            showHourly={this.state.showHourly}
+            showFiveDay={this.state.showFiveDay}
             toggleCurrentWeather={this.props.toggleCurrentWeather}
           />
         </div>

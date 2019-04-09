@@ -13,7 +13,7 @@ const SingleFiveHourly = props => {
       <FormControlLabel
         control={
           <Checkbox
-            checked={props.allState.checkE}
+            checked={props.checkE}
             onChange={props.changeHandler("checkE")}
             value="checkE"
             name="checkE"
@@ -26,7 +26,7 @@ const SingleFiveHourly = props => {
       <FormControlLabel
         control={
           <Checkbox
-            checked={props.allState.checkF}
+            checked={props.checkF}
             onChange={props.changeHandler("checkF")}
             value="checkF"
             name="checkF"
@@ -34,9 +34,7 @@ const SingleFiveHourly = props => {
             onClick={props.toggleHourly}
           />
         }
-        className={
-          props.allState.showFiveDay ? classes.hourlyToggle : classes.hidden
-        }
+        className={props.showFiveDay ? classes.hourlyToggle : classes.hidden}
         label={<span className={classes.formLabel}>Hourly Forecast</span>}
       />
     </form>

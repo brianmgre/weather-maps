@@ -58,27 +58,25 @@ class MapContainer extends Component {
       })
     );
 
-    //updates zoom
-    this.map.on("move", () => {
-      this.setState({
-        zoom: this.map.getZoom().toFixed(2)
-      });
-    });
-
     //sets state lng and lat on click
     this.map.on("click", e => {
       this.map.flyTo({ center: e.lngLat, zoom: 8 });
 
       this.setState({
         lng: e.lngLat.lng.toFixed(2),
-        lat: e.lngLat.lat.toFixed(2)
+        lat: e.lngLat.lat.toFixed(2),
+        zoom: 8
       });
     });
 
     //sets lat and lng on state when search is excuted
     this.map.addControl(geocoder);
     geocoder.on("result", e => {
-      this.setState({ lng: e.result.center[0], lat: e.result.center[1] });
+      this.setState({
+        lng: e.result.center[0],
+        lat: e.result.center[1],
+        zoom: this.map.getZoom().toFixed(2)
+      });
     });
   }
 
@@ -171,8 +169,12 @@ class MapContainer extends Component {
             changeHandler={this.changeHandler}
           />
           <WeatherContainer
-            mapCord={this.state}
-            allState={this.state}
+            mapCordLat={this.state.lat}
+            mapCordLng={this.state.lng}
+            checkF={this.state.checkF}
+            checkE={this.state.checkE}
+            showHourly={this.state.showHourly}
+            showFiveDay={this.state.showFiveDay}
             toggleCurrentWeather={this.toggleCurrentWeather}
             changeHandler={this.changeHandler}
             toggleHourly={this.toggleHourly}
