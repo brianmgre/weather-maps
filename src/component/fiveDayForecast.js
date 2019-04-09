@@ -1,19 +1,24 @@
 import React from "react";
 import WeatherList from "./weatherList";
+import Grid from "@material-ui/core/Grid";
+import withStyles from "@material-ui/core/styles/withStyles";
+import { styles } from "./styles/fiveDayForecastStyle";
 
 const FiveDayForecast = props => {
+  const { classes } = props;
+
   if (!props.fiveDay) {
     return <h1>loading...</h1>;
   }
 
   const forecastHourly = (
-    <div>
+    <Grid container spacing={8} className={classes.gridFive}>
       {props.fiveDay.list.map(five => (
-        <div key={five.dt}>
+        <Grid item lg={2} xs={12} md={5} sm={6} key={five.dt}>
           <WeatherList weather={five} />
-        </div>
+        </Grid>
       ))}
-    </div>
+    </Grid>
   );
 
   const filteredForecast = props.fiveDay.list.filter(
@@ -21,23 +26,30 @@ const FiveDayForecast = props => {
   );
 
   const filterWeather = (
-    <div>
+    <Grid container spacing={10} className={classes.gridHourly}>
       {filteredForecast.map(five => (
-        <div key={five.dt}>
+        <Grid item lg={2} xs={12} md={5} sm={6} key={five.dt}>
           <WeatherList weather={five} />
-        </div>
+        </Grid>
       ))}
-    </div>
+    </Grid>
   );
   console.log("filter", filteredForecast);
-  return (
-    <div>
-      <h1>{props.fiveDay.city.name}</h1>
-      {/* {forecastHourly} */}
 
+  if (props.showHourly) {
+    return (
+      <div className={classes.root}>
+        <h1>{props.fiveDay.city.name}</h1>
+        {forecastHourly}
+      </div>
+    );
+  }
+  return (
+    <div className={classes.root}>
+      <h1>{props.fiveDay.city.name}</h1>
       {filterWeather}
     </div>
   );
 };
 
-export default FiveDayForecast;
+export default withStyles(styles)(FiveDayForecast);

@@ -3,6 +3,8 @@ import "./App.css";
 import MapContainer from "./component/mapContainer";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
+import { styles } from "./component/styles/appStyle";
+import NavBar from "./component/navBar";
 
 const theme = createMuiTheme({
   typography: {
@@ -10,7 +12,7 @@ const theme = createMuiTheme({
   },
   palette: {
     secondary: {
-      main: "#ffffff"
+      main: "#11591c"
     }
   },
   primary: {
@@ -20,9 +22,13 @@ const theme = createMuiTheme({
 
 class App extends Component {
   render() {
+    const { classes } = this.props;
     return (
       <MuiThemeProvider theme={theme}>
-        <div className="App">
+        <div className={classes.root}>
+          <div>
+            <NavBar />
+          </div>
           <MapContainer />
         </div>
       </MuiThemeProvider>
@@ -30,4 +36,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withStyles(styles)(App);

@@ -3,7 +3,9 @@ import mapboxgl from "mapbox-gl";
 import "./styles/map.css";
 import WeatherContainer from "./weatherContainer";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
-import Navbar from "./navBar";
+import withStyles from "@material-ui/core/styles/withStyles";
+import { styles } from "./styles/mapContainerStyle";
+import LayerForm from "./layerForm";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAP_API;
 const weatherKey = process.env.REACT_APP_WEATHER_API;
@@ -18,7 +20,15 @@ class MapContainer extends Component {
     this.state = {
       lng: -51,
       lat: 34,
-      zoom: 1.5
+      zoom: 1.5,
+      checkA: false,
+      checkB: false,
+      checkC: false,
+      checkD: false,
+      checkE: false,
+      checkF: false,
+      showFiveDay: false,
+      showHourly: false
     };
   }
 
@@ -46,7 +56,7 @@ class MapContainer extends Component {
     );
 
     this.map.on("click", e => {
-      this.map.flyTo({ center: e.lngLat, zoom: 13 });
+      this.map.flyTo({ center: e.lngLat, zoom: 8 });
 
       this.setState({
         lng: e.lngLat.lng.toFixed(2),
@@ -54,12 +64,8 @@ class MapContainer extends Component {
       });
     });
 
-    // setTimeout(() => {
-    //   this.hi();
-    // }, 3000);
     this.map.addControl(geocoder);
     geocoder.on("result", e => {
-      console.log(e.result);
       this.setState({ lng: e.result.center[0], lat: e.result.center[1] });
     });
   }
@@ -96,26 +102,52 @@ class MapContainer extends Component {
     }
   };
 
+  changeHandler = name => event => {
+    this.setState({ [name]: event.target.checked });
+  };
+
+  toggleHourly = () => {
+    this.setState({ showHourly: !this.state.showHourly });
+  };
+
+  toggleCurrentWeather = () => {
+    this.setState({
+      showFiveDay: !this.state.showFiveDay
+    });
+  };
+
   render() {
-    console.log("state", this.state);
-    // const { lng, lat, zoom } = this.state;
+    const { classes } = this.props;
 
     return (
-      <div>
-        <Navbar />
-        <div>
+      <div className={this.state.showFiveDay ? classes.rootTwo : classes.root}>
+        <div className={classes.maps}>
           <div ref={el => (this.mapContainer = el)} className="map" />
         </div>
-        <button onClick={this.setLayer("temp", "temp_new")}>Temp</button>
-        <button onClick={this.setLayer("clouds", "clouds_new")}>Clouds</button>
-        <button onClick={this.setLayer("rain", "precipitation_new")}>
-          Rain
-        </button>
-        <button onClick={this.setLayer("wind", "wind_new")}>wind</button>
-        <WeatherContainer mapCord={this.state} />
+        <div
+          className={
+            this.state.showFiveDay ? classes.grow : classes.Weatherbuttons
+          }
+        >
+          <LayerForm
+            setLayer={this.setLayer}
+            checkA={this.state.checkA}
+            checkB={this.state.checkB}
+            checkC={this.state.checkC}
+            checkD={this.state.checkD}
+            changeHandler={this.changeHandler}
+          />
+          <WeatherContainer
+            mapCord={this.state}
+            allState={this.state}
+            toggleCurrentWeather={this.toggleCurrentWeather}
+            changeHandler={this.changeHandler}
+            toggleHourly={this.toggleHourly}
+          />
+        </div>
       </div>
     );
   }
 }
 
-export default MapContainer;
+export default withStyles(styles)(MapContainer);

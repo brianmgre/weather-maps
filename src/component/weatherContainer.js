@@ -2,18 +2,26 @@ import React, { Component } from "react";
 import axios from "axios";
 import WeatherList from "./weatherList";
 import FiveDayForecast from "./fiveDayForecast";
+import { Typography } from "@material-ui/core";
+import withStyles from "@material-ui/core/styles/withStyles";
+import { styles } from "./styles/weatherContainerStyle";
+import SingleFiveHourly from "./singleFiveHourlyForm";
+
 const weatherKey = process.env.REACT_APP_WEATHER_API;
 const url = "http://api.openweathermap.org/data/2.5/";
 const units = "units=imperial";
-const weatherIcons = "http://openweathermap.org/img/w/";
 
 class WeatherContainer extends Component {
   constructor(props) {
     super();
     this.state = {
       weather: [],
-      showFiveDay: true,
-      fiveDay: null
+      showFiveDay: false,
+      fiveDay: null,
+      showHourly: false,
+      checkA: false,
+      checkB: false,
+      checkC: false
     };
   }
 
@@ -66,19 +74,51 @@ class WeatherContainer extends Component {
     }
   }
 
+  toggleHourly = () => {
+    this.setState({ showHourly: !this.state.showHourly });
+  };
+
+  toggleCurrentWeather = () => {
+    this.setState({ showFiveDay: !this.state.showFiveDay });
+  };
+
   render() {
-    console.log("weather", this.state.weather);
-    console.log("five", this.state.fiveDay);
-    if (this.state.showFiveDay) {
-      return <FiveDayForecast fiveDay={this.state.fiveDay} />;
+    const { classes } = this.props;
+    if (this.props.allState.showFiveDay) {
+      return (
+        <div className={classes.root}>
+          <div className={classes.switches}>
+            <SingleFiveHourly
+              allState={this.props.allState}
+              changeHandler={this.props.changeHandler}
+              toggleHourly={this.props.toggleHourly}
+              toggleCurrentWeather={this.props.toggleCurrentWeather}
+            />
+          </div>
+          <FiveDayForecast
+            fiveDay={this.state.fiveDay}
+            showHourly={this.props.allState.showHourly}
+          />
+        </div>
+      );
     }
 
     return (
-      <div>
-        <WeatherList weather={this.state.weather} />
+      <div className={classes.root}>
+        <div className={classes.switches}>
+          <SingleFiveHourly
+            allState={this.props.allState}
+            changeHandler={this.props.changeHandler}
+            toggleCurrentWeather={this.props.toggleCurrentWeather}
+          />
+        </div>
+        <div className={classes.currentWeather}>
+          <Typography variant="h3">{this.state.weather.name}</Typography>
+          <WeatherList weather={this.state.weather} />
+        </div>
       </div>
     );
   }
 }
 
-export default WeatherContainer;
+export default withStyles(styles)(WeatherContainer);
