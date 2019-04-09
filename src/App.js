@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import "./App.css";
+import NavBar from "./component/nav/navBar";
+
 import MapContainer from "./component/mapContainer";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { styles } from "./component/styles/appStyle";
-import NavBar from "./component/navBar";
 
 const theme = createMuiTheme({
   typography: {
