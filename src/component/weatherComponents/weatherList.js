@@ -10,7 +10,7 @@ const WeatherList = props => {
     return <h1>loading...</h1>;
   }
 
-  const allWeatherIcons = "http://openweathermap.org/img/w/";
+  const allWeatherIcons = "https://openweathermap.org/img/w/";
   const weathericon = `${allWeatherIcons}${props.weather.weather[0].icon}.png`;
   const description = props.weather.weather[0].description;
 
