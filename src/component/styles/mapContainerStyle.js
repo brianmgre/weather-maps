@@ -3,7 +3,11 @@ export const styles = theme => ({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 80
+    marginTop: 80,
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      alignItems: "center"
+    }
   },
 
   Weatherbuttons: {

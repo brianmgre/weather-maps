@@ -10,5 +10,10 @@ export const styles = theme => ({
   currentWeather: {
     textAlign: "center",
     marginTop: 20
+  },
+
+  currentName: {
+    fontSize: "3rem",
+    fontWeight: "bold"
   }
 });

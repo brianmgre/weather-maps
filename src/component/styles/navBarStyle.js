@@ -4,6 +4,9 @@ export const styles = theme => ({
   },
 
   logoText: {
-    color: "white"
+    color: "white",
+    "&:hover": {
+      cursor: "pointer"
+    }
   }
 });

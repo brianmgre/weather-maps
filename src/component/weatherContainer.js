@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import axios from "axios";
-import WeatherList from "./weatherList";
-import FiveDayForecast from "./fiveDayForecast";
+import WeatherList from "./weatherComponents/weatherList";
+import FiveDayForecast from "./weatherComponents/fiveDayForecast";
+import SingleFiveHourly from "./forms/singleFiveHourlyForm";
+
 import { Typography } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { styles } from "./styles/weatherContainerStyle";
-import SingleFiveHourly from "./singleFiveHourlyForm";
 
 const weatherKey = process.env.REACT_APP_WEATHER_API;
 const url = "http://api.openweathermap.org/data/2.5/";
@@ -38,7 +39,6 @@ class WeatherContainer extends Component {
       axios
         .get(`${url}weather?lat=${lat}&lon=${lng}&${units}&APPID=${weatherKey}`)
         .then(res => {
-          console.log(res);
           if (res && res.status === 200) {
             this.setState({ weather: res.data });
           }
@@ -57,7 +57,6 @@ class WeatherContainer extends Component {
           `${url}forecast?lat=${lat}&lon=${lng}&${units}&APPID=${weatherKey}`
         )
         .then(res => {
-          console.log(res);
           if (res && res.status === 200) {
             this.setState({ fiveDay: res.data });
           }
@@ -113,7 +112,9 @@ class WeatherContainer extends Component {
           />
         </div>
         <div className={classes.currentWeather}>
-          <Typography variant="h3">{this.state.weather.name}</Typography>
+          <Typography variant="h3" className={classes.currentName}>
+            {this.state.weather.name}
+          </Typography>
           <WeatherList weather={this.state.weather} />
         </div>
       </div>

@@ -1,11 +1,9 @@
 export const styles = theme => ({
-  root: {},
+  root: { textAlign: "center" },
 
   formLabel: {
     fontSize: "1.8rem"
   },
-
-  hourlyToggle: {},
 
   hidden: {
     display: "none"

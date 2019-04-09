@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import mapboxgl from "mapbox-gl";
-import "./styles/map.css";
-import WeatherContainer from "./weatherContainer";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
+import WeatherContainer from "./weatherContainer";
+import LayerForm from "./forms/layerForm";
+
 import withStyles from "@material-ui/core/styles/withStyles";
 import { styles } from "./styles/mapContainerStyle";
-import LayerForm from "./layerForm";
+import "./styles/map.css";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAP_API;
 const weatherKey = process.env.REACT_APP_WEATHER_API;
@@ -27,6 +28,7 @@ class MapContainer extends Component {
       checkD: false,
       checkE: false,
       checkF: false,
+      checkG: false,
       showFiveDay: false,
       showHourly: false
     };
@@ -55,6 +57,12 @@ class MapContainer extends Component {
       })
     );
 
+    this.map.on("move", () => {
+      this.setState({
+        zoom: this.map.getZoom().toFixed(2)
+      });
+    });
+
     this.map.on("click", e => {
       this.map.flyTo({ center: e.lngLat, zoom: 8 });
 
@@ -81,7 +89,7 @@ class MapContainer extends Component {
       this.map.getLayoutProperty(element, "visibility") === "visible"
     ) {
       this.map.setLayoutProperty(element, "visibility", "none");
-    } else if (!this.map.getSource(element)) {
+    } else if (!this.map.getSource(element) && mapType !== "sat") {
       this.map.addSource(element, {
         type: "raster",
         tiles: [
@@ -94,6 +102,24 @@ class MapContainer extends Component {
         type: "raster",
         source: element,
         minzoom: 0,
+        maxzoom: 22,
+        layout: {
+          visibility: "visible"
+        }
+      });
+    } else if (!this.map.getSource(element) && mapType === "sat") {
+      this.map.addSource(element, {
+        type: "raster",
+        tiles: [
+          `http://sat.owm.io/sql/{z}/{x}/{y}?from=s2&APPID=${weatherKey}`
+        ],
+        tileSize: 256
+      });
+      this.map.addLayer({
+        id: element,
+        type: "raster",
+        source: element,
+        minzoom: 5,
         maxzoom: 22,
         layout: {
           visibility: "visible"
@@ -135,6 +161,8 @@ class MapContainer extends Component {
             checkB={this.state.checkB}
             checkC={this.state.checkC}
             checkD={this.state.checkD}
+            checkE={this.state.checkG}
+            zoom={this.state.zoom}
             changeHandler={this.changeHandler}
           />
           <WeatherContainer
