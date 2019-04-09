@@ -8,6 +8,7 @@ import { Typography } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { styles } from "./styles/weatherContainerStyle";
 
+const hourlyKey = process.env.REACT_APP_HOURLY_API;
 const weatherKey = process.env.REACT_APP_WEATHER_API;
 const url = "https://api.openweathermap.org/data/2.5/";
 const units = "units=imperial";
@@ -17,9 +18,7 @@ class WeatherContainer extends Component {
     super();
     this.state = {
       weather: [],
-      // showFiveDay: false,
       fiveDay: null,
-      // showHourly: false,
       checkA: false,
       checkB: false,
       checkC: false
@@ -47,15 +46,12 @@ class WeatherContainer extends Component {
           console.log(err);
         });
     }
-    this.getFiveDayForecast(lat, lng);
   };
 
   getFiveDayForecast = (lat, lng) => {
     if (this.props.mapCord.lat && this.props.mapCord.lat) {
       axios
-        .get(
-          `${url}forecast?lat=${lat}&lon=${lng}&${units}&APPID=${weatherKey}`
-        )
+        .get(`${url}forecast?lat=${lat}&lon=${lng}&${units}&APPID=${hourlyKey}`)
         .then(res => {
           if (res && res.status === 200) {
             this.setState({ fiveDay: res.data });
@@ -71,16 +67,10 @@ class WeatherContainer extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
       this.getWeather(this.props.mapCord.lat, this.props.mapCord.lng);
+    } else if (prevProps !== this.props.allState.showHourly) {
+      this.getFiveDayForecast(this.props.allState.lat, this.props.allState.lng);
     }
   }
-
-  // toggleHourly = () => {
-  //   this.setState({ showHourly: !this.state.showHourly });
-  // };
-
-  // toggleCurrentWeather = () => {
-  //   this.setState({ showFiveDay: !this.state.showFiveDay });
-  // };
 
   render() {
     const { classes } = this.props;
