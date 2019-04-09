@@ -116,7 +116,7 @@ class MapContainer extends Component {
       this.map.addSource(element, {
         type: "raster",
         tiles: [
-          `http://sat.owm.io/sql/{z}/{x}/{y}?from=s2&APPID=${weatherKey}`
+          `https://sat.owm.io/sql/{z}/{x}/{y}?from=s2&APPID=${weatherKey}`
         ],
         tileSize: 256
       });

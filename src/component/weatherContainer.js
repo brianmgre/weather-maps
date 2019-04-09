@@ -9,7 +9,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import { styles } from "./styles/weatherContainerStyle";
 
 const weatherKey = process.env.REACT_APP_WEATHER_API;
-const url = "http://api.openweathermap.org/data/2.5/";
+const url = "https://api.openweathermap.org/data/2.5/";
 const units = "units=imperial";
 
 class WeatherContainer extends Component {
