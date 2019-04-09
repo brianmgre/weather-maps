@@ -30,5 +30,5 @@ Extremely easy to setup, maintain, and provides continuous deployment.
 <li>Fork and clone repo</li>
 <li>Add a .env file at the root of each folder (same level as package.json). Add environment variables.</li>
 <li>Run yarn install to install the necessary node_modules</li>
-<li>Once completed run npm start to start the application. </li>
+<li>Once completed run yarn start to start the application. </li>
   </ol>
