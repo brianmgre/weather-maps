@@ -20,8 +20,8 @@ Extremely easy to setup, maintain, and provides continuous deployment.
 
 <h2>Font-end Variables:</h2>
 
-`REACT_APP_WEATHER_API` is the api key from OpenWeatherMap.
-`REACT_APP_MAP_API` is the api keu from Mapbox
+<li>`REACT_APP_WEATHER_API` is the api key from OpenWeatherMap.</li>
+<li>`REACT_APP_MAP_API` is the api keu from Mapbox</li>
 
 <h2>Using the Application:</h2>
 

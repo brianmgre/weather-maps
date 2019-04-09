@@ -47,6 +47,7 @@ class MapContainer extends Component {
       loading: false
     });
 
+    //find users location
     this.map.addControl(
       new mapboxgl.GeolocateControl({
         positionOptions: {
@@ -57,12 +58,14 @@ class MapContainer extends Component {
       })
     );
 
+    //updates zoom
     this.map.on("move", () => {
       this.setState({
         zoom: this.map.getZoom().toFixed(2)
       });
     });
 
+    //sets state lng and lat on click
     this.map.on("click", e => {
       this.map.flyTo({ center: e.lngLat, zoom: 8 });
 
@@ -72,12 +75,14 @@ class MapContainer extends Component {
       });
     });
 
+    //sets lat and lng on state when search is excuted
     this.map.addControl(geocoder);
     geocoder.on("result", e => {
       this.setState({ lng: e.result.center[0], lat: e.result.center[1] });
     });
   }
 
+  //sets layers on map
   setLayer = (element, mapType) => event => {
     if (
       this.map.getSource(element) &&

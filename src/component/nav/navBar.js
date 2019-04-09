@@ -8,6 +8,8 @@ import withStyles from "@material-ui/core/styles/withStyles";
 
 const Navbar = props => {
   const { classes } = props;
+
+  //scrolls user back to top of page
   const scroll = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };

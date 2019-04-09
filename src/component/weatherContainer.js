@@ -17,9 +17,9 @@ class WeatherContainer extends Component {
     super();
     this.state = {
       weather: [],
-      showFiveDay: false,
+      // showFiveDay: false,
       fiveDay: null,
-      showHourly: false,
+      // showHourly: false,
       checkA: false,
       checkB: false,
       checkC: false
@@ -67,19 +67,20 @@ class WeatherContainer extends Component {
     }
   };
 
+  //watches for when lat and lng are updated
   componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
       this.getWeather(this.props.mapCord.lat, this.props.mapCord.lng);
     }
   }
 
-  toggleHourly = () => {
-    this.setState({ showHourly: !this.state.showHourly });
-  };
+  // toggleHourly = () => {
+  //   this.setState({ showHourly: !this.state.showHourly });
+  // };
 
-  toggleCurrentWeather = () => {
-    this.setState({ showFiveDay: !this.state.showFiveDay });
-  };
+  // toggleCurrentWeather = () => {
+  //   this.setState({ showFiveDay: !this.state.showFiveDay });
+  // };
 
   render() {
     const { classes } = this.props;

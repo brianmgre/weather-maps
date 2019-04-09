@@ -13,6 +13,7 @@ const FiveDayForecast = props => {
     return <h1>loading...</h1>;
   }
 
+  //maps through array of hourly forecast
   const forecastHourly = (
     <Grid container spacing={8} className={classes.gridFive}>
       {props.fiveDay.list.map(five => (
@@ -23,10 +24,12 @@ const FiveDayForecast = props => {
     </Grid>
   );
 
+  //filters hourly forecast into 5 results
   const filteredForecast = props.fiveDay.list.filter(
     five => five.dt_txt.indexOf("12:00") !== -1
   );
 
+  //maps filtered array
   const filterWeather = (
     <Grid container spacing={8} className={classes.gridHourly}>
       {filteredForecast.map(five => (
