@@ -21,7 +21,8 @@ class WeatherContainer extends Component {
       fiveDay: null,
       checkA: false,
       checkB: false,
-      checkC: false
+      checkC: false,
+      apiFail: false
     };
   }
 
@@ -43,7 +44,7 @@ class WeatherContainer extends Component {
           }
         })
         .catch(err => {
-          console.log(err);
+          this.setState({ apiFail: true });
         });
     }
   };
@@ -58,7 +59,7 @@ class WeatherContainer extends Component {
           }
         })
         .catch(err => {
-          console.log(err);
+          this.setState({ apiFail: true });
         });
     }
   };
@@ -74,7 +75,14 @@ class WeatherContainer extends Component {
 
   render() {
     const { classes } = this.props;
-    if (this.props.allState.showFiveDay) {
+
+    if (this.state.apiFail) {
+      return (
+        <Typography variant="h3" className={classes.currentName}>
+          Weather is currently not available
+        </Typography>
+      );
+    } else if (this.props.allState.showFiveDay) {
       return (
         <div className={classes.root}>
           <div className={classes.switches}>
