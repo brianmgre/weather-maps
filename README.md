@@ -8,7 +8,7 @@
 <li>OpenWeatherMap API</li>
 <li>Mapbox API</li>
 <li>Vane API</li>
-<li>ive site: https://worldweathermap.netlify.com/</li>
+<li>Live site: https://worldweathermap.netlify.com/</li>
 
 <h2>React:</h2>
 Enhances the user experience with increased speed with the virtual DOM, and is easy to maintain with its component structure.
