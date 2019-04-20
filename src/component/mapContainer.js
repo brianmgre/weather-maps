@@ -158,6 +158,7 @@ class MapContainer extends Component {
             this.state.showFiveDay ? classes.grow : classes.Weatherbuttons
           }
         >
+          <h1>Click on Map for Weather</h1>
           <LayerForm
             setLayer={this.setLayer}
             checkA={this.state.checkA}
