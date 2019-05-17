@@ -1,3 +1,5 @@
 export const styles = theme => ({
-  root: {}
+  root: {
+    margin: "0 10px"
+  }
 });
